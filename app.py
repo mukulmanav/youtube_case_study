@@ -16,10 +16,6 @@ from warnings import filterwarnings
 import plotly.express as pex
 # %%
 df=pd.read_csv("Data/comments.csv")
-#%%
-# converted csv file to xlsm file
-df.to_excel("comments.xlsm", index=False, engine="openpyxl")
-
 # %%
 df.head()
 # %% checking null values
