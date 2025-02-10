@@ -15,7 +15,7 @@ import warnings
 from warnings import filterwarnings
 import plotly.express as pex
 # %%
-df=pd.read_csv("Data/comments.csv")
+df=pd.read_csv("Data/comments.csv", on_bad_lines="skip")
 # %%
 df.head()
 # %% checking null values
@@ -215,11 +215,37 @@ cdf=full_df.groupby("channel_title").size().sort_values(ascending=False).reset_i
 cdf
 # %%
 cdf=cdf.rename(columns={0:'total_videos'})
-# %%
-pex.bar(cdf[:10],x='channel_title',y='total_videos')
+
 # %%
 plt2.figure(figsize=(8,6))
-sns.boxplot(x='channel_title',y='total_videos',data=cdf[:10])
+sns.barplot(x='channel_title',y='total_videos',data=cdf[:10])
 plt2.xticks(rotation='vertical')
 plt2.show
+# %%
+full_df['title'][0]
+# %%
+import string
+# %%
+#pre exist punctuations
+string.punctuation
+# %%
+# Punctuations in a title
+len([char for char in full_df['title'][0] if char in string.punctuation])
+# %% 
+def punc_count(text):
+    return len([char for char in text if char in string.punctuation])
+# %%
+sample = full_df[0:10000]
+# %%
+sample['count_punc'] = sample['title'].apply(punc_count)
+# %%
+sample['count_punc']
+# %%
+plt2.figure(figsize=(8,6))
+sns.boxplot(x='count_punc' , y='views' , data=sample)
+plt2.show()
+# %%
+plt2.figure(figsize=(8,6))
+sns.boxplot(x='count_punc' , y='likes' , data=sample)
+plt2.show()
 # %%
